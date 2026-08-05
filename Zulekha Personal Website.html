@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zulekha Rehman — Personal Site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --asphalt:#05070F;
+    --surface:#0C1122;
+    --surface-raised:#131A33;
+    --line:#232C4D;
+    --white:#F1F5FF;
+    --muted:#7C88AE;
+    --red:#FF2E92;
+    --gold:#00E5FF;
+    --green:#C6FF4D;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--asphalt);
+    color:var(--white);
+    font-family:'IBM Plex Sans',sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--red);color:var(--white);}
+
+  a{color:inherit;}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--gold);
+  }
+
+  /* ---------- LIGHTS-OUT INTRO ---------- */
+  #lights{
+    position:fixed;inset:0;z-index:100;
+    background:var(--asphalt);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:22px;
+    transition:opacity .6s ease, visibility .6s ease;
+  }
+  #lights.hide{opacity:0;visibility:hidden;pointer-events:none;}
+  .light-row{display:flex;gap:18px;}
+  .bulb{
+    width:26px;height:26px;border-radius:50%;
+    background:#3a1010;
+    border:2px solid #501414;
+    box-shadow:inset 0 0 6px rgba(0,0,0,.6);
+    transition:background .15s ease, box-shadow .15s ease;
+  }
+  .bulb.on{background:var(--red);box-shadow:0 0 18px 4px rgba(255,46,146,.65);}
+  .bulb.go{background:var(--gold);box-shadow:0 0 22px 6px rgba(0,229,255,.75);}
+  #lights-caption{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+    min-height:16px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    #lights{display:none;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:96px 6vw 80px;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .track-bg{
+    position:absolute;top:-8%;right:-12%;
+    width:74vw;max-width:920px;
+    opacity:.5;
+    z-index:0;
+    filter:drop-shadow(0 0 10px rgba(0,229,255,.35));
+  }
+  .track-bg .circuit-line{
+    stroke:var(--gold);
+    opacity:.55;
+  }
+  .floodlight{
+    opacity:.5;
+  }
+  .hero-inner{position:relative;z-index:1;max-width:1100px;}
+  .status-row{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    margin-bottom:28px;
+  }
+  .chip{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    padding:6px 12px;border-radius:3px;
+    border:1px solid var(--line);
+    color:var(--muted);
+    display:inline-flex;align-items:center;gap:7px;
+  }
+  .chip.live{border-color:var(--green);color:var(--green);}
+  .dot-pulse{width:7px;height:7px;border-radius:50%;background:var(--green);}
+  @media (prefers-reduced-motion: no-preference){
+    .dot-pulse{animation:pulse 1.6s ease-in-out infinite;}
+  }
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
+
+  h1.name{
+    font-family:'Titillium Web',sans-serif;
+    font-weight:900;
+    font-size:clamp(48px,9vw,118px);
+    line-height:.88;
+    letter-spacing:-.01em;
+    text-transform:uppercase;
+  }
+  h1.name span{color:var(--red);}
+
+  .tagline{
+    font-size:clamp(16px,2.2vw,20px);
+    color:var(--muted);
+    max-width:560px;
+    margin-top:22px;
+    line-height:1.5;
+  }
+
+  .meta-row{
+    margin-top:36px;
+    display:flex;gap:32px;flex-wrap:wrap;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .meta-row div span{display:block;color:var(--white);font-size:14px;margin-top:4px;}
+  .meta-label{letter-spacing:.12em;text-transform:uppercase;}
+
+  /* ---------- FLOODLIT DIVIDER ---------- */
+  .strip{
+    position:relative;
+    height:56px;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 34px, var(--white) 34px 54px) center/100% 3px no-repeat,
+      linear-gradient(180deg, #0A0F20, var(--asphalt));
+    overflow:hidden;
+    opacity:.9;
+  }
+  .strip .pole{
+    position:absolute;top:0;bottom:0;width:2px;background:#2B335A;
+  }
+  .strip .glow{
+    position:absolute;top:-40px;width:120px;height:120px;
+    background:radial-gradient(circle, rgba(0,229,255,.55), transparent 70%);
+  }
+
+  /* ---------- SECTOR GRID ---------- */
+  .board{
+    padding:64px 6vw 40px;
+  }
+  .board-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    flex-wrap:wrap;gap:10px;
+    margin-bottom:36px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:16px;
+  }
+  .board-head h2{
+    font-family:'Titillium Web',sans-serif;
+    font-weight:700;font-size:22px;letter-spacing:.02em;text-transform:uppercase;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  @media (max-width:980px){ .grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--surface);
+    padding:26px 22px 30px;
+    display:flex;flex-direction:column;
+    min-height:420px;
+  }
+  .sector-tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--gold);
+    display:flex;align-items:center;gap:8px;
+    margin-bottom:6px;
+  }
+  .sector-tag::before{
+    content:"";width:10px;height:10px;background:var(--red);
+    clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+  }
+  .card h3{
+    font-family:'Titillium Web',sans-serif;
+    font-weight:700;font-size:19px;text-transform:uppercase;
+    margin-bottom:16px;
+    padding-bottom:14px;
+    border-bottom:1px dashed var(--line);
+  }
+  .card-note{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;color:var(--muted);
+    margin-top:auto;padding-top:16px;
+    border-top:1px solid var(--line);
+  }
+
+  /* career timeline */
+  .timeline{list-style:none;position:relative;padding-left:18px;}
+  .timeline::before{content:"";position:absolute;left:4px;top:4px;bottom:4px;width:1px;background:var(--line);}
+  .timeline li{position:relative;margin-bottom:18px;}
+  .timeline li::before{
+    content:"";position:absolute;left:-18px;top:5px;
+    width:9px;height:9px;border-radius:50%;
+    background:var(--asphalt);border:2px solid var(--red);
+  }
+  .timeline .role{font-weight:600;font-size:14.5px;}
+  .timeline .org{font-size:13px;color:var(--muted);}
+
+  /* garage / lego */
+  .build{margin-bottom:20px;}
+  .build-top{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:6px;}
+  .build-top .set{font-weight:600;}
+  .build-top .pct{font-family:'IBM Plex Mono',monospace;color:var(--gold);font-size:12px;}
+  .bar{height:6px;background:var(--surface-raised);border:1px solid var(--line);position:relative;}
+  .bar > span{display:block;height:100%;background:var(--red);}
+
+  /* on repeat */
+  .track{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 0;border-bottom:1px solid var(--line);
+    font-size:13.5px;
+  }
+  .track:last-of-type{border-bottom:none;}
+  .track .num{
+    font-family:'IBM Plex Mono',monospace;color:var(--muted);font-size:12px;margin-right:10px;
+  }
+  .track-title{font-weight:600;}
+  .track-artist{color:var(--muted);font-size:12px;}
+  .track-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green);
+    border:1px solid var(--green);padding:2px 6px;border-radius:2px;text-transform:uppercase;
+  }
+
+  /* target lap */
+  .plan-item{margin-bottom:18px;}
+  .plan-item .flag{
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--red);letter-spacing:.1em;
+  }
+  .plan-item h4{font-family:'Titillium Web',sans-serif;font-weight:700;font-size:15px;margin:4px 0 4px;text-transform:uppercase;}
+  .plan-item p{font-size:13px;color:var(--muted);line-height:1.5;}
+
+  .mini-block{margin-top:22px;padding-top:16px;border-top:1px dashed var(--line);}
+  .mini-block .subhead{
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:10px;
+  }
+  .mini-block ul{list-style:none;}
+  .mini-block li{
+    font-size:12.5px;color:var(--muted);margin-bottom:7px;padding-left:14px;position:relative;line-height:1.4;
+  }
+  .mini-block li::before{content:"—";position:absolute;left:0;color:var(--red);}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    margin-top:40px;
+    border-top:1px solid var(--line);
+    padding:0;
+  }
+  .checker{
+    height:10px;
+    background-image:
+      linear-gradient(45deg, var(--surface-raised) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--surface-raised) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, var(--surface-raised) 75%),
+      linear-gradient(-45deg, transparent 75%, var(--surface-raised) 75%);
+    background-size:16px 16px;
+    background-position:0 0,0 8px,8px -8px,-8px 0;
+    background-color:var(--white);
+  }
+  .footer-inner{
+    padding:36px 6vw 48px;
+    display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;
+  }
+  .footer-inner .fname{
+    font-family:'Titillium Web',sans-serif;font-weight:900;font-size:20px;text-transform:uppercase;
+  }
+  .links{display:flex;gap:22px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:12px;}
+  .links a{text-decoration:none;color:var(--muted);border-bottom:1px solid transparent;transition:color .15s,border-color .15s;}
+  .links a:hover{color:var(--white);border-color:var(--red);}
+  .copyline{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);padding:0 6vw 28px;}
+</style>
+</head>
+<body>
+
+<!-- LIGHTS OUT INTRO -->
+<div id="lights">
+  <div class="light-row">
+    <div class="bulb" data-i="1"></div>
+    <div class="bulb" data-i="2"></div>
+    <div class="bulb" data-i="3"></div>
+    <div class="bulb" data-i="4"></div>
+    <div class="bulb" data-i="5"></div>
+  </div>
+  <div id="lights-caption">FORMATION LAP</div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <svg class="track-bg" viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="beam" cx="50%" cy="0%" r="75%">
+        <stop offset="0%" stop-color="#F1F5FF" stop-opacity=".85"/>
+        <stop offset="100%" stop-color="#F1F5FF" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+
+    <!-- floodlight rigs around the circuit -->
+    <g class="floodlight">
+      <rect x="112" y="132" width="4" height="30" fill="#3A4266"/>
+      <ellipse cx="114" cy="128" rx="34" ry="26" fill="url(#beam)"/>
+      <rect x="418" y="42" width="4" height="30" fill="#3A4266"/>
+      <ellipse cx="420" cy="38" rx="34" ry="26" fill="url(#beam)"/>
+      <rect x="418" y="122" width="4" height="30" fill="#3A4266"/>
+      <ellipse cx="420" cy="118" rx="34" ry="26" fill="url(#beam)"/>
+      <rect x="140" y="300" width="4" height="30" fill="#3A4266"/>
+      <ellipse cx="142" cy="296" rx="34" ry="26" fill="url(#beam)"/>
+    </g>
+
+    <path id="track-path" class="circuit-line" d="M40,300 C40,220 60,180 120,170 C170,162 190,120 160,80 C140,54 170,20 220,30 C270,40 260,90 300,100 C360,115 380,60 440,70 C480,77 470,140 430,150 C390,160 400,210 450,220 C480,226 470,280 430,290 C380,302 360,260 300,270 C230,282 220,340 150,330 C90,321 60,340 40,300 Z"
+      stroke-width="3"/>
+
+    <!-- car silhouette running the lap -->
+    <g>
+      <animateMotion dur="9s" repeatCount="indefinite" rotate="auto">
+        <mpath href="#track-path"/>
+      </animateMotion>
+      <g transform="translate(-13,-5)">
+        <rect x="0" y="4" width="26" height="4" rx="2" fill="var(--red)"/>
+        <rect x="6" y="0" width="10" height="4" rx="1.5" fill="var(--red)"/>
+        <rect x="-2" y="3" width="4" height="6" rx="1" fill="#1A2140"/>
+        <rect x="24" y="3" width="4" height="6" rx="1" fill="#1A2140"/>
+        <circle cx="6" cy="9" r="2.4" fill="#0B0E1C"/>
+        <circle cx="20" cy="9" r="2.4" fill="#0B0E1C"/>
+        <circle cx="15" cy="4" r="1.4" fill="var(--gold)"/>
+      </g>
+    </g>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="status-row">
+      <span class="chip live"><span class="dot-pulse"></span>P1 — IN SEASON</span>
+    </div>
+
+    <h1 class="name">ZULEKHA<br>REHMAN<span>.</span></h1>
+
+
+    <div class="meta-row">
+      <div><span class="meta-label">On socials</span><span>@Zeesfuntimes</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOODLIT DIVIDER -->
+<div class="strip">
+  <div class="pole" style="left:12%;"></div>
+  <div class="glow" style="left:calc(12% - 60px);"></div>
+  <div class="pole" style="left:38%;"></div>
+  <div class="glow" style="left:calc(38% - 60px);"></div>
+  <div class="pole" style="left:64%;"></div>
+  <div class="glow" style="left:calc(64% - 60px);"></div>
+  <div class="pole" style="left:90%;"></div>
+  <div class="glow" style="left:calc(90% - 60px);"></div>
+</div>
+
+<!-- SECTOR BOARD -->
+<section class="board">
+  <div class="board-head">
+    <h2>Timing Board</h2>
+    <span class="eyebrow">Four sectors, one lap</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- SECTOR 1: ABOUT -->
+    <div class="card">
+      <span class="sector-tag">Sector 1</span>
+      <h3>The Driver</h3>
+      <p style="font-size:14px;line-height:1.65;color:var(--white);margin-bottom:18px;">
+        Hi, I'm Zulekha, an aspiring lawyer and self-proclaimed average writer. My background is in federal policy and communications, and these days I'm putting that same instinct for structure and clarity into building things of my own.
+      </p>
+      <p style="font-size:14px;line-height:1.65;color:var(--white);margin-bottom:18px;">
+        I'm currently building Zeesfuntimes, where I write about the intersection of politics and Formula 1, and beyond. Once you start looking, politics is everywhere, and I love pulling that thread.
+      </p>
+    </div>
+
+    <!-- SECTOR 2: WRITING -->
+    <div class="card">
+      <span class="sector-tag">Sector 2</span>
+      <h3>Words on Track</h3>
+      <p style="font-size:13.5px;line-height:1.6;color:var(--muted);margin-bottom:18px;">
+        Right now I'm in the middle of researching and learning more about the role politics plays in Formula 1, and more broadly, how public policy shapes nearly everything around us.
+      </p>
+      <div class="plan-item">
+        <div class="flag">ESSAY</div>
+        <h4>Coming soon</h4>
+        <p>First piece is in the works — check back soon.</p>
+      </div>
+      <div class="plan-item">
+        <div class="flag">NOTE</div>
+        <h4>Still researching</h4>
+        <p>Reading and pulling sources together before I write.</p>
+      </div>
+
+      <div class="mini-block">
+        <div class="subhead">Things I Like</div>
+        <ul>
+          <li>Building Legos</li>
+          <li>The Office</li>
+          <li>Drinking coffee</li>
+          <li>Updating my Letterboxd</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- SECTOR 3: FAVORITES -->
+    <div class="card">
+      <span class="sector-tag">Sector 3</span>
+      <h3>In Rotation</h3>
+
+      <div class="mini-block" style="margin-top:0;padding-top:0;border-top:none;">
+        <div class="subhead">Music</div>
+        <ul>
+          <li><a href="https://open.spotify.com/playlist/0Y5rKALDyxmQ2xrxMqjEEo?si=23a10d44ef4e448b" target="_blank" rel="noopener" style="color:var(--gold);">Rotating Favorites →</a></li>
+          <li><a href="https://open.spotify.com/playlist/46BAZ48wblYL9kTCPVc9xo?si=973384c0148546e9" target="_blank" rel="noopener" style="color:var(--gold);">Desi Indie →</a></li>
+        </ul>
+      </div>
+
+      <div class="mini-block">
+        <div class="subhead">Books</div>
+        <ul>
+          <li>Sense and Sensibility — Jane Austen</li>
+          <li>Hamnet — Maggie O'Farrell</li>
+        </ul>
+      </div>
+
+      <div class="mini-block">
+        <div class="subhead">I love making book playlists</div>
+        <ul>
+          <li><a href="https://open.spotify.com/playlist/44aNyoEppqIFMqb6mPf1OG?si=ce1c5002a4734308" target="_blank" rel="noopener" style="color:var(--gold);">Intermezzo →</a></li>
+          <li><a href="https://open.spotify.com/playlist/0vQeCgsxDbHpXCAyfxvAFs?si=68c54bcd4ce4417e" target="_blank" rel="noopener" style="color:var(--gold);">Normal People →</a></li>
+          <li><a href="https://open.spotify.com/playlist/6DMNvvWFL2Zn1GrpYulcPm?si=f2f8d53928ac4a75" target="_blank" rel="noopener" style="color:var(--gold);">One Golden Summer →</a></li>
+        </ul>
+      </div>
+
+      <div class="mini-block">
+        <div class="subhead">TV Shows (Currently Watching)</div>
+        <ul>
+          <li>Ted Lasso</li>
+          <li>Widows Bay</li>
+          <li>Industry</li>
+        </ul>
+      </div>
+
+      <div class="mini-block">
+        <div class="subhead">Movies</div>
+        <ul>
+          <li><a href="https://boxd.it/8d1td" target="_blank" rel="noopener" style="color:var(--gold);">My Letterboxd →</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- SECTOR FINAL: WHAT I'M CREATING -->
+    <div class="card">
+      <span class="sector-tag">Final Sector</span>
+      <h3>What I'm Creating</h3>
+      <div class="plan-item">
+        <div class="flag">LAW</div>
+        <h4>Aspiring lawyer</h4>
+        <p>Currently studying for my LSAT.</p>
+      </div>
+      <div class="plan-item">
+        <div class="flag">CIVIC</div>
+        <h4>Building Curbside Policy</h4>
+        <p>Always building and talking through public policy. Right now I do that by building Curbside Policy, a platform making small-town municipal politics easier to understand.</p>
+      </div>
+      <div class="plan-item">
+        <div class="flag">WRITING</div>
+        <h4>Zeesfuntimes</h4>
+        <p>Where I write, get creative, do research, and show off my love for coffee.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="checker"></div>
+  <div class="footer-inner">
+    <div class="fname">ZULEKHA REHMAN</div>
+    <div class="links">
+      <a href="https://twitter.com/Zeesfuntimes" target="_blank" rel="noopener">Twitter — @Zeesfuntimes</a>
+      <a href="#" target="_blank" rel="noopener">Curbside Policy</a>
+      <a href="#">Email</a>
+    </div>
+  </div>
+  <div class="copyline">Built between race weekends</div>
+</footer>
+
+<script>
+  // Lights-out intro sequence
+  (function(){
+    var overlay = document.getElementById('lights');
+    var bulbs = document.querySelectorAll('.bulb');
+    var caption = document.getElementById('lights-caption');
+    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(prefersReduced){ overlay.classList.add('hide'); }
+    else{
+      var i = 0;
+      var seq = setInterval(function(){
+        if(i < bulbs.length){
+          bulbs[i].classList.add('on');
+          i++;
+        } else {
+          clearInterval(seq);
+          setTimeout(function(){
+            bulbs.forEach(function(b){ b.classList.remove('on'); b.classList.add('go'); });
+            caption.textContent = 'LIGHTS OUT — SITE LIVE';
+            setTimeout(function(){ overlay.classList.add('hide'); }, 500);
+          }, 400);
+        }
+      }, 300);
+    }
+  })();
+
+</script>
+
+</body>
+</html>
